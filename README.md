@@ -1,87 +1,40 @@
-# urlshortnerapi
+# 🔗 URL Shortener API (Bitly Clone)
 
-A high-performance RESTful backend service built with Spring Boot 3 and Java 21 to compress long URLs into short, trackable links.
+A high-performance REST API that takes long URLs and generates short, shareable links. Built with a focus on speed and scalability, this application utilizes in-memory caching to handle high-traffic redirects and automated background tasks to maintain database health.
+
+---
 
 ## 🚀 Features
-* **URL Compression**: Generates unique, lightweight short codes for long URLs.
-* **Redis Caching**: Caches original URLs to ensure ultra-fast redirection speeds.
-* **MySQL Persistence**: Stores durable URL mapping records and analytics safely.
-* **Click Analytics**: Tracks total visits and access metrics per shortened link.
+
+* **Instant Redirects:** Utilizes Redis caching to intercept and serve high-volume URL requests in milliseconds, completely bypassing the database.
+* **Link Generation:** Generates unique, 6-character alphanumeric short codes for any valid URL.
+* **Automated Janitor Tasks:** Implements Spring Scheduling to run a nightly cron job that automatically purges expired URLs from the database.
+* **Fully Containerized:** Packaged with Docker for seamless, platform-agnostic deployment.
+* **CI/CD Pipeline:** Integrated with GitHub Actions to automatically build and verify code integrity on every push.
+
+---
 
 ## 🛠️ Tech Stack
-* **Java 21** (Virtual Threads optimized)
-* **Spring Boot 3.x** (Spring Web, Spring Data JPA, Spring Data Redis)
-* **MySQL** (Relational database for persistent storage)
-* **Redis** (In-memory data grid for high-speed cache)
-* **Apache Maven** (Dependency management)
 
-## 📦 Prerequisites
-* Java Development Kit (JDK) 21 installed
-* Apache Maven 3.9+ installed
-* Running instance of MySQL Server
-* Running instance of Redis Server
+* **Language:** Java 21
+* **Framework:** Spring Boot 3
+* **Database:** MySQL (Persistent Storage)
+* **Cache:** Redis (In-Memory Fast Retrieval)
+* **DevOps:** Docker, GitHub Actions
 
-## ⚙️ Getting Started
+---
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com
-cd urlshortnerapi
-```
+## ⚙️ Getting Started (Local Development)
 
-### 2. Configure Environment
-Update your credentials in `src/main/resources/application.properties`:
-```properties
-server.port=8080
+### Prerequisites
+* [Docker Desktop](https://www.docker.com/products/docker-desktop) installed and running.
+* Java 21 installed locally.
 
-# MySQL Configuration
-spring.datasource.url=jdbc:mysql://localhost:3306/url_shortener_db?useSSL=false&serverTimezone=UTC
-spring.datasource.username=your_mysql_user
-spring.datasource.password=your_mysql_password
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=false
+### Installation
 
-# Redis Configuration
-spring.data.redis.host=localhost
-spring.data.redis.port=6379
-spring.data.redis.password=your_redis_password
-```
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/YOUR-USERNAME/url-shortener-api.git](https://github.com/YOUR-USERNAME/url-shortener-api.git)
+   cd url-shortener-api
 
-### 3. Build and Run
-```bash
-mvn clean install
-mvn spring-boot:run
-```
-
-## 🔌 API Endpoints
-
-### Shorten a URL
-* **Endpoint:** `POST /api/v1/shorten`
-* **Request Body:**
-```json
-{
-  "longUrl": "https://example.com"
-}
-```
-* **Response:**
-```json
-{
-  "shortCode": "aB7x9K",
-  "shortUrl": "http://localhost:8080/aB7x9K"
-}
-```
-
-### Redirect Link (Uses Redis Cache)
-* **Endpoint:** `GET /{shortCode}`
-* **Action:** Fetches from Redis cache (or falls back to MySQL) and redirects with HTTP 302.
-
-### Get Analytics
-* **Endpoint:** `GET /api/v1/analytics/{shortCode}`
-* **Response:**
-```json
-{
-  "shortCode": "aB7x9K",
-  "clickCount": 142,
-  "createdDate": "2026-08-21T13:12:00Z"
-}
-```
+   
